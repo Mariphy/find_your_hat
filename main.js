@@ -9,8 +9,8 @@ const pathCharacter = '*';
 class Field {
     constructor(array) {
         this.field = array;
-        horizontalCoordinate = 0;
-        verticalCoordinate = 0;
+        this.horizontalCoordinate = 0;
+        this.verticalCoordinate = 0;
     }
 
     print() {
@@ -19,9 +19,36 @@ class Field {
         }
     }
 
-    //move(userInput) {
+    move(userInput) {
 
-    //}
+        if (userInput === 'down') {
+            this.verticalCoordinate += 1;
+        } else if (userInput === 'right') {
+            this.horizontalCoordinate += 1;
+        } else if (userInput === 'up') {
+            this.verticalCoordinate -= 1;
+        } else if (userInput === 'left') {
+            this.horizontalCoordinate -= 1;
+        }
+        return this.field[this.verticalCoordinate][this.horizontalCoordinate] 
+    }
+    
+    play() {
+
+        if (this.horizontalCoordinate < 0 || this.verticalCoordinate < 0) {
+            console.log('You are out of field.');
+            return true;
+        } else if (this.field[this.verticalCoordinate][this.horizontalCoordinate] === hat) {
+            console.log('You won!');
+            return true;
+        } else if (this.field[this.verticalCoordinate][this.horizontalCoordinate] === hole) {
+            console.log('You fell in the hole and lost.');
+            return true;
+        } else if (this.field[this.verticalCoordinate][this.horizontalCoordinate] === pathCharacter) {
+            this.field[this.verticalCoordinate][this.horizontalCoordinate] = pathCharacter; 
+            return false;
+        }      
+    }
 
     /*static generateField(width, height) {
 
@@ -30,58 +57,22 @@ class Field {
 
 
 const myField = new Field([
-    [pathCharacter, fieldCharacter, hole, fieldCharacter],
+    [pathCharacter, hat, hole, fieldCharacter],
     [fieldCharacter, hole, fieldCharacter, fieldCharacter],
     [fieldCharacter, hat, fieldCharacter, hole],
     [hole, hole, fieldCharacter, fieldCharacter]
   ]);
 
-let nextCoordinate = myField.field[0][0];
-//console.log(nextCoordinate);
-myField.print();
-
-// Getting user input
-const direction = prompt(`Which way? (please, use 'up', 'down', 'right' or 'left') `);
-
-
-const calculateNextCoordinate = (userInput) => {
-    let startPointHorizontal = 0;
-    let startPointVertical = 0;
-    if (direction === 'down') {
-        startPointVertical += 1;
-    } else if (direction === 'right') {
-        startPointHorizontal += 1;
-        //console.log(startPointHorizontal);
-    } else if (direction === 'up') {
-        startPointVertical -= 1;
-        //console.log(startPointVertical);
-    } else if (direction === 'left') {
-        startPointHorizontal -= 1;
-    }
-    if (startPointHorizontal < 0 || startPointVertical < 0) {
-        console.log('You are out of field.')
-    } else {
-        nextCoordinate = myField.field[startPointVertical][startPointHorizontal];
-        return nextCoordinate;
-    }    
-}
-
-calculateNextCoordinate(direction);
-
-
 const playGame = () => {
-    if (nextCoordinate === hat) {
-        console.log('You won!')
-    } else if (nextCoordinate === hole) {
-        console.log('You fell in the hole and lost.')
-    } else if (nextCoordinate === fieldCharacter) {
-        while (nextCoordinate === fieldCharacter) {
-            nextCoordinate = pathCharacter;
-            myField.print();
-        }   
+    let endGame = false;
+    while (!endGame) {
+        let direction = prompt(`Which way? (please, use 'up', 'down', 'right' or 'left') `);
+        myField.move(direction);
+        if (myField.play() === true) {
+            break;
+        }
     }
-
+    myField.print(); 
 }
-
 
 playGame();
