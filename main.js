@@ -19,7 +19,7 @@ class Field {
         }
     }
 
-    move(userInput) {
+    play(userInput) {
 
         if (userInput === 'down') {
             this.verticalCoordinate += 1;
@@ -30,25 +30,24 @@ class Field {
         } else if (userInput === 'left') {
             this.horizontalCoordinate -= 1;
         }
-        return this.field[this.verticalCoordinate][this.horizontalCoordinate] 
-    }
-    
-    play() {
 
         if (this.horizontalCoordinate < 0 || this.verticalCoordinate < 0) {
             console.log('You are out of field.');
             return true;
-        } else if (this.field[this.verticalCoordinate][this.horizontalCoordinate] === hat) {
+        }
+
+        if (this.field[this.verticalCoordinate][this.horizontalCoordinate] === hat) {
             console.log('You won!');
             return true;
         } else if (this.field[this.verticalCoordinate][this.horizontalCoordinate] === hole) {
             console.log('You fell in the hole and lost.');
             return true;
-        } else if (this.field[this.verticalCoordinate][this.horizontalCoordinate] === pathCharacter) {
-            this.field[this.verticalCoordinate][this.horizontalCoordinate] = pathCharacter; 
-            return false;
-        }      
+        } else if (this.field[this.verticalCoordinate][this.horizontalCoordinate] === fieldCharacter) {
+            this.field[this.verticalCoordinate][this.horizontalCoordinate] = pathCharacter;
+            return this.field[this.verticalCoordinate][this.horizontalCoordinate]; 
+        }   
     }
+    
 
     static generateField(width, height) {
         let generatedField = [];
@@ -87,8 +86,8 @@ class Field {
 
 
 const myField = new Field([
-    [pathCharacter, hat, hole, fieldCharacter],
-    [fieldCharacter, hole, fieldCharacter, fieldCharacter],
+    [pathCharacter, fieldCharacter, hole, fieldCharacter],
+    [fieldCharacter, fieldCharacter, fieldCharacter, hole],
     [fieldCharacter, hat, fieldCharacter, hole],
     [hole, hole, fieldCharacter, fieldCharacter]
   ]);
@@ -97,8 +96,7 @@ const playGame = (sampleField) => {
     let endGame = false;
     while (!endGame) {
         let direction = prompt(`Which way? (please, use 'up', 'down', 'right' or 'left') `);
-        sampleField.move(direction);
-        if (sampleField.play() === true) {
+        if (sampleField.play(direction) === true) {
             break;
         }
     }
@@ -106,5 +104,3 @@ const playGame = (sampleField) => {
 }
 
 playGame(myField);
-
-console.log(Field.generateField(10,10));
