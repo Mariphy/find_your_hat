@@ -50,9 +50,39 @@ class Field {
         }      
     }
 
-    /*static generateField(width, height) {
+    static generateField(width, height) {
+        let generatedField = [];
+        let randomNumber = Math.floor(Math.random()*2); 
+        let generatedArrayWinner = [];
+        while (generatedArrayWinner.length < width) {
+            if (randomNumber === 0) {
+                generatedArrayWinner = generatedArrayWinner.push(pathCharacter);
+            } else if (randomNumber === 1) {
+                generatedArrayWinner = generatedArrayWinner.push(hole);
+            } else if (randomNumber === 2) {
+                if (generatedArrayWinner.includes(hat) === false) {
+                    generatedArrayWinner = generatedArrayWinner.push(hat);
+                } 
+            }
 
-    }*/
+        }
+        let generatedArray = [];
+        let randomNumber2 = Math.floor(Math.random()*1); 
+        while (generatedArray.length < width) {
+            if (randomNumber === 0) {
+                generatedArray = generatedArray.push(pathCharacter);
+            } else if (randomNumber === 1) {
+                generatedArray = generatedArray.push(hole);
+            } 
+        }
+        
+        while (generatedField.length < height) {
+            generatedField = generatedField.push(generatedArray);
+        }
+        for (let i = 0; i < generatedField.length; i++) {
+            console.log(generatedField[i].join(''));
+        }
+    }
 }
 
 
@@ -63,16 +93,18 @@ const myField = new Field([
     [hole, hole, fieldCharacter, fieldCharacter]
   ]);
 
-const playGame = () => {
+const playGame = (sampleField) => {
     let endGame = false;
     while (!endGame) {
         let direction = prompt(`Which way? (please, use 'up', 'down', 'right' or 'left') `);
-        myField.move(direction);
-        if (myField.play() === true) {
+        sampleField.move(direction);
+        if (sampleField.play() === true) {
             break;
         }
     }
-    myField.print(); 
+    sampleField.print(); 
 }
 
-playGame();
+playGame(myField);
+
+console.log(Field.generateField(10,10));
