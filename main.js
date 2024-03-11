@@ -50,38 +50,37 @@ class Field {
     
 
     static generateField(width, height) {
-        let generatedField = [];
-        let randomNumber = Math.floor(Math.random()*2); 
-        let generatedArrayWinner = [];
-        while (generatedArrayWinner.length < width) {
-            if (randomNumber === 0) {
-                generatedArrayWinner = generatedArrayWinner.push(pathCharacter);
-            } else if (randomNumber === 1) {
-                generatedArrayWinner = generatedArrayWinner.push(hole);
-            } else if (randomNumber === 2) {
-                if (generatedArrayWinner.includes(hat) === false) {
-                    generatedArrayWinner = generatedArrayWinner.push(hat);
+        let generatedField = [[pathCharacter, fieldCharacter, hole], [fieldCharacter, fieldCharacter, fieldCharacter], [fieldCharacter, hat, fieldCharacter]];
+
+        for (let j = 0; j <= 2; j++) {
+            while (generatedField[j].length < width) {
+                let randomNumber2 = Math.floor(Math.random()*2); 
+                if (randomNumber2 === 0) {
+                    generatedField[j].push(fieldCharacter);
+                } else if (randomNumber2 === 1) {
+                    generatedField[j].push(hole);
                 } 
             }
+        }
 
-        }
-        let generatedArray = [];
-        let randomNumber2 = Math.floor(Math.random()*1); 
-        while (generatedArray.length < width) {
-            if (randomNumber === 0) {
-                generatedArray = generatedArray.push(pathCharacter);
-            } else if (randomNumber === 1) {
-                generatedArray = generatedArray.push(hole);
-            } 
-        }
-        
         while (generatedField.length < height) {
-            generatedField = generatedField.push(generatedArray);
+            let generatedArray = [];
+            while (generatedArray.length < width) {
+                let randomNumber = Math.floor(Math.random()*2); 
+                if (randomNumber === 0) {
+                  generatedArray.push(fieldCharacter);
+                } else if (randomNumber === 1) {
+                  generatedArray.push(hole);
+                } 
+            }
+            generatedField.push(generatedArray);
         }
-        for (let i = 0; i < generatedField.length; i++) {
-            console.log(generatedField[i].join(''));
-        }
-    }
+
+        /*for (let i = 0; i < generatedField.length; i++) {
+            return generatedField[i].join('');
+        }*/
+        return generatedField;
+    } 
 }
 
 
@@ -91,6 +90,8 @@ const myField = new Field([
     [fieldCharacter, hat, fieldCharacter, hole],
     [hole, hole, fieldCharacter, fieldCharacter]
   ]);
+
+const myField2 = new Field(Field.generateField(10,10));  
 
 const playGame = (sampleField) => {
     let endGame = false;
@@ -103,4 +104,8 @@ const playGame = (sampleField) => {
     sampleField.print(); 
 }
 
-playGame(myField);
+
+playGame(myField2);
+//console.log(myField2)
+
+
